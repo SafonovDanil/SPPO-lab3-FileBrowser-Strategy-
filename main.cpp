@@ -36,6 +36,45 @@ class ByFolder_CalculationStrategy:public IStrategy
 public:
     void CalculationMethod(const QString& path)
     {
+    QDir dir(path);
+    QFileInfoList fileInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+    QList<std::pair<QString,double>> filesSizeList;
+    if(!path.isEmpty())
+        {
+            if(!dir.exists())
+                throw QString("Directory does not exist");
+            QFileInfoList filesInfoList = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+            double dirSize = this->fullDirectorySize(path);
+            for (QFileInfo &curItem : filesInfoList)
+            {
+                double itemSize;
+                if(curItem.isDir())
+                    itemSize = this->fullDirectorySize(path + '/' +curItem.fileName())/dirSize;
+                else
+                    itemSize = (double)curItem.size()/dirSize;
+                filesSizeList.push_back(std::pair<QString,double> (curItem.fileName(),itemSize));
+            }
+        }
+        //std::cout << curDir.fileName().toStdString() << ":\n";
+        for(auto& curFile : filesSizeList)
+        {
+            if (curFile.second >= 0.01)
+                std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/100.  << " %" << std::endl;
+            else if(curFile.second)
+                std::cout << curFile.first.toStdString() << "  " <<  "<0.01 %"  << std::endl;
+            else
+                std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
+        }
+        if(filesSizeList.isEmpty())
+            std::cout << "empty directory\n";
+
+
+
+
+
+
+
+
     }
 };
 
