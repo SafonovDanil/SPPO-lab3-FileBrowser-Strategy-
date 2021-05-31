@@ -46,14 +46,15 @@ public:
         {
             double itemSize;
             if(curItem.isDir())
-                itemSize = this->fullDirectorySize(path + '/' +curItem.fileName())/dirSize;
+                itemSize = this->fullDirectorySize(path + '/' +curItem.fileName())*100/dirSize;
             else
-                itemSize = (double)curItem.size()/dirSize;
+                itemSize = (double)curItem.size()*100/dirSize;
             filesSizeList.push_back(std::pair<QString,double> (curItem.fileName(),itemSize));
         }
-
+    double test = 0;
     for(auto& curFile : filesSizeList)
     {
+        test += curFile.second;
         if (curFile.second >= 0.01)
             std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/100.  << " %" << std::endl;
         else if(curFile.second)
@@ -61,6 +62,7 @@ public:
         else
             std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
     }
+    std::cout << "test = " << test << " %" << std::endl;
     if(filesSizeList.isEmpty())
         std::cout << "empty directory\n";
     }
@@ -78,7 +80,7 @@ public:
             throw QString("directory does not exist");
         QFileInfoList filesInfoList = dir.entryInfoList(QDir::Files);
         QFileInfoList dirList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-        QFileInfoList::iterator iterFileInfo = dirList.begin();;
+        QFileInfoList::iterator iterFileInfo = dirList.begin();
         while(iterFileInfo != dirList.end())
         {
             filesInfoList += QDir(iterFileInfo->absoluteFilePath()).entryInfoList(QDir::Files);
@@ -110,10 +112,12 @@ public:
                 if(curItem.suffix() == curSuffix)
                 typesSizeList.last().second += curItem.size();
             }
-            typesSizeList.last().second /= dirSize;
+            typesSizeList.last().second *= 100/dirSize;
         }
+        double test = 0;
         for(auto& curFile : typesSizeList)
         {
+            test += curFile.second;
             if (curFile.second >= 0.01)
                 std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/100.  << " %" << std::endl;
             else if(curFile.second)
@@ -121,6 +125,7 @@ public:
             else
                 std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
         }
+        std::cout << "test = " << test << " %"<< std::endl;
         if(typesSizeList.isEmpty())
         std::cout << "empty directory" << std::endl;
     }
@@ -138,7 +143,7 @@ int main(int argc, char *argv[])
     ByFolder_CalculationStrategy * strat1 = new ByFolder_CalculationStrategy;
     ByFileType_CalculationStrategy * strat2 = new ByFileType_CalculationStrategy;
 
-    QString path("C:/Users/samiy/Documents/lab_2");
+    QString path("C:/Users/samiy/Documents/SPPO/lab3/test");
 
     std::cout << std::endl << "strat1:" << std::endl;
     PrintFolderInfo(path, strat1);

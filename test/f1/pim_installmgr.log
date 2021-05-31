@@ -1,0 +1,33 @@
+  PTC Installation assistant log file
+========= PIM Version: 6.0.3.0 ==========
+Чт янв 14 15:47:58 21
+=======================================
+ Sessioninfo xml file :H:\pim\xml\sessioninfo.xml)
+sessioninfo created
+PimTop-sessioninfo created
+before test communication
+skip test communication
+set platforms
+set languages prop
+ Sessioninfo xml file :H:\pim\xml\dotnet4.xml)
+ Sessioninfo xml file :H:\pim\xml\dotnet4.xml)
+Загружен файл определения продукта: H:\pim\xml\mathcad.xml.
+Загружен файл определения продукта: H:\pim\xml\mathcadpdsi.xml.
+Загружен файл определения продукта: H:\pim\xml\qualityagent.xml.
+В результате теста обнаружено, что клиентский профиль Microsoft .NET Framework 4 установлен. 
+В результате теста обнаружено, что платформа Microsoft .NET Framework 4 установлена. 
+Компонент Microsoft, который требуется только при установке PTC Mathcad Prime.
+Задан корневой путь установки: C:\Program Files\PTC
+Задан корневой путь установки: C:\Program Files\PTC
+Задан корневой путь установки: G:\mathcad
+Запуск установки PTC Mathcad Prime.
+Запуск установки PTC Mathcad Viewable Support.
+Запуск установки Diagnostic Tools.
+Для преобразования более старых документов Mathcad в документы
+PTC Mathcad Prime 6.0.0.0 требуется PTC Mathcad 15 M050 или более
+поздней версии. Чтобы активировать функцию преобразования, 
+загрузите и установите PTC Mathcad 15 M050 или более поздней
+версии, посетив http://www.ptc.com/engineering-math-software/mathcad/free-trial
+При выполнении командной строки "msiexec.exe /qn /I "H:\install\addon\qualityagent_64.msi" INSTALLDIR="G:\mathcad\DiagnosticTools"" возвращен код завершения 0.
+При выполнении командной строки "msiexec.exe /qn /norestart /I "H:\ptcsh0\PrimeWixInstaller_64bit.msi" /lv "C:\Users\samiy\Documents/pim_prime_msi.log" INSTALLDIR="G:\mathcad\Mathcad Prime 6.0.0.0"" возвращен код завершения 0.
+До свидания!
