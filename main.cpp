@@ -13,7 +13,7 @@
 class IStrategy
 {
 public:
-    virtual void CalculationMethod(const QString&) = 0;
+    virtual QList<std::pair<QString,double>> CalculationMethod(const QString&) = 0;
     double fullDirectorySize(QString path)
     {
         double dirSize = 0;
@@ -33,7 +33,7 @@ public:
 class ByFolder_CalculationStrategy:public IStrategy
 {
 public:
-    void CalculationMethod(const QString& path)
+    QList<std::pair<QString,double>> CalculationMethod(const QString& path)
     {
     QDir dir(path);
     QFileInfoList fileInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -46,32 +46,19 @@ public:
         {
             double itemSize;
             if(curItem.isDir())
-                itemSize = this->fullDirectorySize(path + '/' +curItem.fileName())*100/dirSize;
+                itemSize = this->fullDirectorySize(path + '/' +curItem.fileName());
             else
-                itemSize = (double)curItem.size()*100/dirSize;
+                itemSize = (double)curItem.size();
             filesSizeList.push_back(std::pair<QString,double> (curItem.fileName(),itemSize));
         }
-    double test = 0;
-    for(auto& curFile : filesSizeList)
-    {
-        test += curFile.second;
-        if (curFile.second >= 0.01)
-            std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/100.  << " %" << std::endl;
-        else if(curFile.second)
-            std::cout << curFile.first.toStdString() << "  " <<  "<0.01 %"  << std::endl;
-        else
-            std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
-    }
-    std::cout << "test = " << test << " %" << std::endl;
-    if(filesSizeList.isEmpty())
-        std::cout << "empty directory\n";
+        return filesSizeList;
     }
 };
 
 class ByFileType_CalculationStrategy:public IStrategy
 {
 public:
-    void CalculationMethod(const QString& path)
+    QList<std::pair<QString,double>> CalculationMethod(const QString& path)
     {
         QDir dir(path);
         //QFileInfoList filesInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -81,17 +68,22 @@ public:
         QFileInfoList filesInfoList = dir.entryInfoList(QDir::Files);
         QFileInfoList dirList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
         QFileInfoList::iterator iterFileInfo = dirList.begin();
-        while(iterFileInfo != dirList.end())
+        for(int i = 0; i < dirList.size(); i++)
         {
-            filesInfoList += QDir(iterFileInfo->absoluteFilePath()).entryInfoList(QDir::Files);
-            dirList += QDir(iterFileInfo->absoluteFilePath()).entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-            iterFileInfo++;
+            filesInfoList += QDir(dirList[i].absoluteFilePath()).entryInfoList(QDir::Files);
+            dirList += QDir(dirList[i].absoluteFilePath()).entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
         }
-//            for(auto &curDir : dirList)
-//            {
-//                filesInfoList += QDir(curDir.absoluteFilePath()).entryInfoList(QDir::Files);
-//                dirList += QDir(curDir.absoluteFilePath()).entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-//            }
+//        while(iterFileInfo != dirList.end())
+//        {
+//            filesInfoList += QDir(iterFileInfo->absoluteFilePath()).entryInfoList(QDir::Files);
+//            dirList += QDir(iterFileInfo->absoluteFilePath()).entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+//            iterFileInfo++;
+//        }
+//        for(auto &curDir : dirList)
+//        {
+//           filesInfoList += QDir(curDir.absoluteFilePath()).entryInfoList(QDir::Files);
+//           dirList += QDir(curDir.absoluteFilePath()).entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+//        }
         double dirSize = this->fullDirectorySize(path);
         //QFileInfoList::iterator iterFileInfo;
         QList <QString> typesList;
@@ -112,28 +104,51 @@ public:
                 if(curItem.suffix() == curSuffix)
                 typesSizeList.last().second += curItem.size();
             }
-            typesSizeList.last().second *= 100/dirSize;
+            //typesSizeList.last().second *= 100;
         }
-        double test = 0;
-        for(auto& curFile : typesSizeList)
-        {
-            test += curFile.second;
-            if (curFile.second >= 0.01)
-                std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/100.  << " %" << std::endl;
-            else if(curFile.second)
-                std::cout << curFile.first.toStdString() << "  " <<  "<0.01 %"  << std::endl;
-            else
-                std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
-        }
-        std::cout << "test = " << test << " %"<< std::endl;
-        if(typesSizeList.isEmpty())
-        std::cout << "empty directory" << std::endl;
+        return typesSizeList;
+//        double test = 0;
+//        for(auto& curFile : typesSizeList)
+//        {
+//            test += curFile.second;
+//            if (curFile.second >= 0.01)
+//                std::cout << curFile.first.toStdString() << "  " <<  (int)(curFile.second*100)/(dirSize*100.)  << " %" << std::endl;
+//            else if(curFile.second)
+//                std::cout << curFile.first.toStdString() << "  " <<  "<0.01 %"  << std::endl;
+//            else
+//                std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
+//        }
+//        if(!test)
+//            test = 100;
+//        std::cout << "ALL DIR = " << test << " %"<< std::endl;
+//        if(typesSizeList.isEmpty())
+//        std::cout << "empty directory" << std::endl;
     }
 };
 
 void PrintFolderInfo(QString path, IStrategy* strat)
 {
-    strat->CalculationMethod(path);
+    QList<std::pair<QString,double>> filesInfoList;
+    filesInfoList = strat->CalculationMethod(path);
+    double test = 0;
+    double dirSize = strat->fullDirectorySize(path);
+    for(auto& curFile : filesInfoList)
+    {
+        test += curFile.second;
+        if (curFile.second >= 0.01)
+            std::cout << curFile.first.toStdString() << "  " <<  (int)((curFile.second/dirSize*100)*100)/(100.)  << " %" << std::endl;
+        else if(curFile.second)
+            std::cout << curFile.first.toStdString() << "  " <<  "<0.01 %"  << std::endl;
+        else
+            std::cout << curFile.first.toStdString() << "  " <<  "0 %"  << std::endl;
+    }
+    test *=  100/dirSize;
+    if(!test)
+        test = 100;
+    std::cout << "ALL DIR " << test << " %" << std::endl;
+    if(filesInfoList.isEmpty())
+        std::cout << "empty directory\n";
+
 };
 
 
