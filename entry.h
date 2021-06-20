@@ -8,10 +8,9 @@ class Entry
 public:
     Entry(QString name, double sizePercent, double size);
 
-    QString m_name;
-
-    double m_sizePercent;
-    double m_size;
+    QString entry_name;
+    double entry_size;
+    double entry_percent;
 };
 
 #endif // ENTRY_H

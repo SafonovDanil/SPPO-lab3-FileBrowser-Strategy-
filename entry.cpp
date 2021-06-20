@@ -1,8 +1,8 @@
 #include "entry.h"
 
-Entry::Entry(QString name, double sizePercent, double size)
+Entry::Entry(QString name, double size, double percent)
 {
-    m_name = name;
-    m_sizePercent = sizePercent;
-    m_size = size;
+    entry_name = name;
+    entry_size = size;
+    entry_percent = percent;
 }
