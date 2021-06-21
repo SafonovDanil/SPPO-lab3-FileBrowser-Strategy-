@@ -1,10 +1,11 @@
 #include "byfolder_calculationstrategy.h"
+#include "entry.h"
 
-    QList<std::pair<QString,double>> ByFolder_CalculationStrategy::CalculationMethod(const QString& path)
+    QList<Entry> ByFolder_CalculationStrategy::CalculationMethod(const QString& path)
     {
     QDir dir(path);
     QFileInfoList fileInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    QList<std::pair<QString,double>> filesSizeList;
+    QList<Entry> filesSizeList;
         if(!dir.exists())
            throw QString("directory does not exist");
         QFileInfoList filesInfoList = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
@@ -16,7 +17,7 @@
                 itemSize = this->fullDirectorySize(path + '/' +curItem.fileName());
             else
                 itemSize = (double)curItem.size();
-            filesSizeList.push_back(std::pair<QString,double> (curItem.fileName(),itemSize));
+            filesSizeList.push_back(Entry(curItem.fileName(),itemSize/dirSize,itemSize));
         }
         return filesSizeList;
     }

@@ -1,9 +1,9 @@
 #include "byfiletype_calculationstrategy.h"
 
-QList<std::pair<QString,double>> ByFileType_CalculationStrategy::CalculationMethod(const QString& path)
+QList<Entry> ByFileType_CalculationStrategy::CalculationMethod(const QString& path)
 {
     QDir dir(path);
-    QList<std::pair<QString,double>> typesSizeList;
+    QList<Entry> typesSizeList;
     if(!dir.exists())
         throw QString("directory does not exist");
     QFileInfoList filesInfoList = dir.entryInfoList(QDir::Files);
@@ -27,12 +27,13 @@ QList<std::pair<QString,double>> ByFileType_CalculationStrategy::CalculationMeth
     for (QString &type : typesList)
     {
         curSuffix = type;
-        typesSizeList.append(std::pair<QString,double>(curSuffix,0));
+        typesSizeList.append(Entry(curSuffix,0,0));
         for (QFileInfo &curItem : filesInfoList)
         {
             if(curItem.suffix() == curSuffix)
-            typesSizeList.last().second += curItem.size();
+                typesSizeList.last().entry_size += curItem.size();
         }
+        typesSizeList.last().entry_percent = typesSizeList.last().entry_size / dirSize;
     }
     return typesSizeList;
 }

@@ -6,7 +6,7 @@
 class ByFileType_CalculationStrategy : public CalculationStrategy
 {
 public:
-    QList<std::pair<QString,double>> CalculationMethod(const QString& path);
+    QList<Entry> CalculationMethod(const QString& path);
 };
 
 #endif // BYFILETYPE_CALCULATIONSTRATEGY_H

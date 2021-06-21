@@ -9,12 +9,13 @@
 #include <QApplication>
 #include <QFileSystemModel>
 #include <QDebug>
+#include <entry.h>
 
 class CalculationStrategy
 {
 public:
     CalculationStrategy() = default;
-    virtual QList<std::pair<QString,double>> CalculationMethod(const QString&) = 0;
+    virtual QList<Entry> CalculationMethod(const QString&) = 0;
     double fullDirectorySize(QString path);
 };
 
