@@ -17,7 +17,7 @@
                 itemSize = this->fullDirectorySize(path + '/' +curItem.fileName());
             else
                 itemSize = (double)curItem.size();
-            filesSizeList.push_back(Entry(curItem.fileName(),itemSize/dirSize,itemSize));
+            filesSizeList.push_back(Entry(curItem.fileName(),itemSize,itemSize/dirSize));
         }
         return filesSizeList;
     }
