@@ -1,4 +1,5 @@
-QT       += core gui
+ QT       += core gui
+ QT += charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,6 +18,7 @@ SOURCES += \
     filesmodel.cpp \
     main.cpp \
     mainwindow.cpp \
+    myview.cpp \
     piechart.cpp
 
 HEADERS += \
@@ -27,6 +29,7 @@ HEADERS += \
     entry.h \
     filesmodel.h \
     mainwindow.h \
+    myview.h \
     piechart.h
 
 FORMS += \

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+    #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QSplitter>
 #include <QListView>
@@ -16,16 +16,18 @@ MainWindow::MainWindow(QWidget *parent)
     : //QWidget(parent)
       QMainWindow(parent), ui(new Ui::MainWindow)
 {
-     ui->setupUi(this);
+    ui->setupUi(this);
     //Устанавливаем размер главного окна
-//    this->setGeometry(100, 100, 1500, 500);
-//    this->setStatusBar(new QStatusBar(this));
-//    this->statusBar()->showMessage("Choosen Path: ");
-//    QString homePath = QDir::homePath();
+    //    this->setGeometry(100, 100, 1500, 500);
+    //    this->setStatusBar(new QStatusBar(this));
+    //    this->statusBar()->showMessage("Choosen Path: ");
+    //    QString homePath = QDir::homePath();
     folderModel = new ByFolder_CalculationStrategy;
-     typeModel = new ByFileType_CalculationStrategy;
+    typeModel = new ByFileType_CalculationStrategy;
     strategy = folderModel;
-     currentDir = QDir::homePath();
+    pieChart = new PieChart(this);
+        barChart = new BarChart(this);
+    currentDir = QDir::homePath();
     // Определим  файловой системы:
     dirModel =  new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -48,6 +50,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->horizontalLayout_3->addWidget(tableView,2);
 
+    ui->horizontalLayout_3->addWidget(barChart,2);
+    ui->horizontalLayout_3->addWidget(pieChart,2);
+
+
+    barChart->hide();
+     barChart->setModel(filesModel);
+     pieChart->hide();
+     pieChart->setModel(filesModel);
 
     dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -169,10 +179,10 @@ void MainWindow::displayTypeChanged(int display_id)
         view = tableView;
         break;
     case 1:
-        //view = pieChart;
+        view = pieChart;
         break;
     case 2:
-        //view = barChart;
+        view = barChart;
         break;
     }
     view->show();

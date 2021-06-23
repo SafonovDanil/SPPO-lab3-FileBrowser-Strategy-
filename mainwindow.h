@@ -11,6 +11,8 @@
 #include "filesmodel.h"
 #include "byfiletype_calculationstrategy.h"
 #include "byfolder_calculationstrategy.h"
+#include "barchart.h"
+#include "piechart.h"
 class QTableView;
 class QItemSelection;
 class QAbstractItemView;
@@ -37,14 +39,14 @@ private:
     //QFileSystemModel *fileModel;
     Ui::MainWindow *ui;
     FilesModel* filesModel;
-    QList<Entry> (*computeDataForModel)(const QString &path);
 
     ByFileType_CalculationStrategy* typeModel;
     ByFolder_CalculationStrategy* folderModel;
     CalculationStrategy *strategy;
 
     QWidget* view;
-
+    PieChart *pieChart;
+    BarChart *barChart;
     QFileSystemModel *dirModel;
     QTreeView *treeView;
     QTableView *tableView;
