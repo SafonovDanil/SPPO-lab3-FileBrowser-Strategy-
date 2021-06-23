@@ -37,8 +37,6 @@ protected:
     QRect drawRect;
     QRect legendRect;
 
-    const QColor palet[12] = {Qt::red, Qt::blue, Qt::magenta, Qt::green, Qt::yellow, Qt::cyan, Qt::darkRed,
-                           Qt::darkBlue, Qt::darkMagenta, Qt::darkYellow, Qt::darkGreen, Qt::darkCyan};
 
 };
 
