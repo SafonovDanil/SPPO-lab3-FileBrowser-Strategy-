@@ -18,7 +18,6 @@ public:
     ~PieChartAdapter() = default;
     void updateModel(QList<Entry> model);
     QChart * getChart();
-    QtCharts::QChart* dataBarChart();
 
 protected:
 

@@ -46,22 +46,17 @@ MainWindow::MainWindow(QWidget *parent)
     view = tableView;
 
     ui->horizontalLayout_3->addWidget(tableView,2);
-    adapter = new BarChartAdapter(this,strategy->CalculationMethod(currentDir));
-    adapter2 = new PieChartAdapter(this,strategy->CalculationMethod(currentDir));
-    //chartBar = adapter->dataBarChart();
-    chartView = new QChartView(adapter->getChart());
-    chartView2 = new QChartView(adapter2->getChart());
+    barAdapter = new BarChartAdapter(this,strategy->CalculationMethod(currentDir));
+    pieAdapter = new PieChartAdapter(this,strategy->CalculationMethod(currentDir));
+    barView = new QChartView(barAdapter->getChart());
+    pieView = new QChartView(pieAdapter->getChart());
 
 
-    ui->horizontalLayout_3->addWidget(chartView,2);
-    ui->horizontalLayout_3->addWidget(chartView2,2);
-    chartView->hide();
-    chartView2->hide();
+    ui->horizontalLayout_3->addWidget(barView,2);
+    ui->horizontalLayout_3->addWidget(pieView,2);
+    barView->hide();
+    pieView->hide();
 
-//    barChart->hide();
-//    barChart->setModel(filesModel);
-//    pieChart->hide();
-//    pieChart->setModel(filesModel);
 
     dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -108,7 +103,6 @@ void MainWindow::actionChanged(int action_id)
         return;
     }
     modelPtr->updateModel(strategy->CalculationMethod(currentDir));
-    ////filesModel->updateModel(strategy->CalculationMethod(currentDir));
 }
 
 void MainWindow::displayTypeChanged(int display_id)
@@ -122,14 +116,12 @@ void MainWindow::displayTypeChanged(int display_id)
         break;
     case 1:
 
-        view = chartView2;
-        modelPtr = adapter2;
-        //view = pieChart;
+        view = pieView;
+        modelPtr = pieAdapter;
         break;
     case 2:
-        view = chartView;
-        modelPtr = adapter;
-        //view = barChart;
+        view = barView;
+        modelPtr = barAdapter;
         break;
     }
     view->show();
@@ -137,24 +129,12 @@ void MainWindow::displayTypeChanged(int display_id)
 
 void MainWindow::on_selectionChangedSlot(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    //Q_UNUSED(selected);
     Q_UNUSED(deselected);
-    // QModelIndex index = treeView->selectionModel()->currentIndex();
     QModelIndexList indexs =  selected.indexes();
-    //QString filePath = "";
-
-
     if (indexs.count() >= 1) {
         QModelIndex ix =  indexs.constFirst();
         currentDir = dirModel->filePath(ix);
         this->statusBar()->showMessage("Выбранный путь : " + currentDir);
     }
-//    //calculaet list
-//    filesModel->updateModel(strategy->CalculationMethod(currentDir));
-//    //chartView->setChart(ChartAdapter(this, strategy->CalculationMethod(currentDir)).dataBarChart());
-//    //chartView->setChart(ChartAdapter(this, strategy->CalculationMethod(currentDir)).dataBarChart());
-//    //adapter zhret list
-//    adapter->updateModel(strategy->CalculationMethod(currentDir));
- //   adapter2->updateModel(strategy->CalculationMethod(currentDir));
     modelPtr->updateModel(strategy->CalculationMethod(currentDir));
 }

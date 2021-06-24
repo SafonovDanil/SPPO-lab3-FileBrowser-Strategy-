@@ -74,7 +74,6 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private:
-    //QFileSystemModel *fileModel;
     Ui::MainWindow *ui;
     FilesModel* filesModel;
 
@@ -90,10 +89,10 @@ private:
 
     QString currentDir;
 
-    BarChartAdapter* adapter;
-    PieChartAdapter* adapter2;
-    QChartView *chartView;
-    QChartView *chartView2;
+    BarChartAdapter* barAdapter;
+    PieChartAdapter* pieAdapter;
+    QChartView *barView;
+    QChartView *pieView;
 
 
      FilesModel * modelPtr;
