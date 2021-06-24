@@ -1,4 +1,4 @@
-    #include "mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QSplitter>
 #include <QListView>
@@ -12,36 +12,33 @@
 #include <QStatusBar>
 #include <QDebug>
 
+
+
+
+
+QT_CHARTS_USE_NAMESPACE
+
+
 MainWindow::MainWindow(QWidget *parent)
     : //QWidget(parent)
       QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //Устанавливаем размер главного окна
-    //    this->setGeometry(100, 100, 1500, 500);
-    //    this->setStatusBar(new QStatusBar(this));
-    //    this->statusBar()->showMessage("Choosen Path: ");
-    //    QString homePath = QDir::homePath();
     folderModel = new ByFolder_CalculationStrategy;
     typeModel = new ByFileType_CalculationStrategy;
     strategy = folderModel;
-    pieChart = new PieChart(this);
-        barChart = new BarChart(this);
+
     currentDir = QDir::homePath();
-    // Определим  файловой системы:
+
     dirModel =  new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-    //dirModel->setRootPath(homePath);
-    currentDir = QDir::homePath();
-    //fileModel = new QFileSystemModel(this);
-    //fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files);
 
-    //fileModel->setRootPath(homePath);
-    //Показать как дерево, пользуясь готовым видом:
+    currentDir = QDir::homePath();
+
 
     filesModel = new FilesModel(this, strategy->CalculationMethod(currentDir));
 
-
+    modelPtr = filesModel;
 
     tableView = new QTableView(this);
     tableView->setModel(filesModel);
@@ -49,15 +46,22 @@ MainWindow::MainWindow(QWidget *parent)
     view = tableView;
 
     ui->horizontalLayout_3->addWidget(tableView,2);
+    adapter = new BarChartAdapter(this,strategy->CalculationMethod(currentDir));
+    adapter2 = new PieChartAdapter(this,strategy->CalculationMethod(currentDir));
+    //chartBar = adapter->dataBarChart();
+    chartView = new QChartView(adapter->getChart());
+    chartView2 = new QChartView(adapter2->getChart());
 
-    ui->horizontalLayout_3->addWidget(barChart,2);
-    ui->horizontalLayout_3->addWidget(pieChart,2);
 
+    ui->horizontalLayout_3->addWidget(chartView,2);
+    ui->horizontalLayout_3->addWidget(chartView2,2);
+    chartView->hide();
+    chartView2->hide();
 
-    barChart->hide();
-     barChart->setModel(filesModel);
-     pieChart->hide();
-     pieChart->setModel(filesModel);
+//    barChart->hide();
+//    barChart->setModel(filesModel);
+//    pieChart->hide();
+//    pieChart->setModel(filesModel);
 
     dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -66,80 +70,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeView->setModel(dirModel);
 
     connect(ui->treeView,SIGNAL(expanded(const QModelIndex &)),this,SLOT(treeViewCollapsedOrExpanded()));
-       connect(ui->treeView,SIGNAL(collapsed(const QModelIndex &)),this,SLOT(treeViewCollapsedOrExpanded()));
+    connect(ui->treeView,SIGNAL(collapsed(const QModelIndex &)),this,SLOT(treeViewCollapsedOrExpanded()));
 
-       connect(ui->comboBox_action,SIGNAL(currentIndexChanged(int)),this,SLOT(actionChanged(int)));
-       connect(ui->comboBox_display,SIGNAL(currentIndexChanged(int)),this,SLOT(displayTypeChanged(int)));
+    connect(ui->comboBox_action,SIGNAL(currentIndexChanged(int)),this,SLOT(actionChanged(int)));
+    connect(ui->comboBox_display,SIGNAL(currentIndexChanged(int)),this,SLOT(displayTypeChanged(int)));
 
-       QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
+    QItemSelectionModel *selectionModel = ui->treeView->selectionModel();
 
-       connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-               this, SLOT(on_selectionChangedSlot(const QItemSelection &, const QItemSelection &)));
-   }
-//    treeView = new QTreeView();
-//    treeView->setModel(dirModel);
-//    treeView->expandAll();
+    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this, SLOT(on_selectionChangedSlot(const QItemSelection &, const QItemSelection &)));
+}
 
-//    QSplitter *splitter = new QSplitter(parent);
-//    tableView = new QTableView;
-//    //tableView->setModel(fileModel);
-//    splitter->addWidget(treeView);
-//    splitter->addWidget(tableView);
-//    setCentralWidget(splitter);
-
-//    QItemSelectionModel *selectionModel = treeView->selectionModel();
-//    QModelIndex rootIx = dirModel->index(0, 0, QModelIndex());//корневой элемент
-
-//    QModelIndex indexHomePath = dirModel->index(homePath);
-//    QFileInfo fileInfo = dirModel->fileInfo(indexHomePath);
-
-    /* Рассмотрим способы обхода содержимого папок на диске.
-     * Предлагается вариант решения, которы может быть применен для более сложных задач.
-     * Итак, если требуется выполнить анализ содержимого папки, то необходимо организовать обход содержимого. Обход выполняем относительно модельного индекса.
-     * Например:*/
-//    if (fileInfo.isDir()) {
-//        /*
-//         * Если fileInfo папка то заходим в нее, что бы просмотреть находящиеся в ней файлы.
-//         * Если нужно просмотреть все файлы, включая все вложенные папки, то нужно организовать рекурсивный обход.
-//        */
-//        QDir dir  = fileInfo.dir();
-
-//        if (dir.cd(fileInfo.fileName())) {
-//            /**
-//             * Если зашли в папку, то пройдемся по контейнеру QFileInfoList ,полученного методом entryInfoList,
-//             * */
-
-//            foreach (QFileInfo inf, dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::Type)) {
-//                qDebug() << inf.fileName() << "---" << inf.size();
-//            }
-
-//            dir.cdUp();//выходим из папки
-//        }
-//    }
-
-//    QDir dir = fileInfo.dir();
-
-//    foreach (QFileInfo inf, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDir::Type)) {
-
-//        qDebug() << inf.fileName() << "---" << inf.size();
-//    }
-
-
-//    treeView->header()->resizeSection(0, 200);
-//    //Выполняем соединения слота и сигнала который вызывается когда осуществляется выбор элемента в TreeView
-//    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-//            this, SLOT(on_selectionChangedSlot(const QItemSelection &, const QItemSelection &)));
-//    //Пример организации установки курсора в TreeView относит ельно модельного индекса
-//    QItemSelection toggleSelection;
-//    QModelIndex topLeft;
-//    topLeft = dirModel->index(homePath);
-//    dirModel->setRootPath(homePath);
-
-//    toggleSelection.select(topLeft, topLeft);
-//    selectionModel->select(toggleSelection, QItemSelectionModel::Toggle);
-//}
-//Слот для обработки выбора элемента в TreeView
-//выбор осуществляется с помощью курсора
 
 
 
@@ -166,8 +107,8 @@ void MainWindow::actionChanged(int action_id)
     default:
         return;
     }
-
-    filesModel->updateModel(strategy->CalculationMethod(currentDir));
+    modelPtr->updateModel(strategy->CalculationMethod(currentDir));
+    ////filesModel->updateModel(strategy->CalculationMethod(currentDir));
 }
 
 void MainWindow::displayTypeChanged(int display_id)
@@ -177,12 +118,18 @@ void MainWindow::displayTypeChanged(int display_id)
     {
     case 0:
         view = tableView;
+        modelPtr = filesModel;
         break;
     case 1:
-        view = pieChart;
+
+        view = chartView2;
+        modelPtr = adapter2;
+        //view = pieChart;
         break;
     case 2:
-        view = barChart;
+        view = chartView;
+        modelPtr = adapter;
+        //view = barChart;
         break;
     }
     view->show();
@@ -192,39 +139,22 @@ void MainWindow::on_selectionChangedSlot(const QItemSelection &selected, const Q
 {
     //Q_UNUSED(selected);
     Q_UNUSED(deselected);
-   // QModelIndex index = treeView->selectionModel()->currentIndex();
+    // QModelIndex index = treeView->selectionModel()->currentIndex();
     QModelIndexList indexs =  selected.indexes();
     //QString filePath = "";
 
-    // Размещаем инфо в statusbar относительно выделенного модельного индекса
 
     if (indexs.count() >= 1) {
         QModelIndex ix =  indexs.constFirst();
         currentDir = dirModel->filePath(ix);
         this->statusBar()->showMessage("Выбранный путь : " + currentDir);
     }
-    filesModel->updateModel(strategy->CalculationMethod(currentDir));
-    //TODO: !!!!!
-    /*
-    Тут простейшая обработка ширины первого столбца относительно длины названия папки.
-    Это для удобства, что бы при выборе папки имя полностью отображалась в  первом столбце.
-    Требуется доработка(переработка).
-    */
-//    int length = 200;
-//    int dx = 30;
-
-//    if (dirModel->fileName(index).length() * dx > length) {
-//        length = length + dirModel->fileName(index).length() * dx;
-//        qDebug() << "r = " << index.row() << "c = " << index.column() << dirModel->fileName(index) << dirModel->fileInfo(
-//                     index).size();
-
-//    }
-
-//    treeView->header()->resizeSection(index.column(), length + dirModel->fileName(index).length());
-    //tableView->setRootIndex(fileModel->setRootPath(filePath));
+//    //calculaet list
+//    filesModel->updateModel(strategy->CalculationMethod(currentDir));
+//    //chartView->setChart(ChartAdapter(this, strategy->CalculationMethod(currentDir)).dataBarChart());
+//    //chartView->setChart(ChartAdapter(this, strategy->CalculationMethod(currentDir)).dataBarChart());
+//    //adapter zhret list
+//    adapter->updateModel(strategy->CalculationMethod(currentDir));
+ //   adapter2->updateModel(strategy->CalculationMethod(currentDir));
+    modelPtr->updateModel(strategy->CalculationMethod(currentDir));
 }
-
-//MainWindow::~MainWindow()
-//{
-
-//}

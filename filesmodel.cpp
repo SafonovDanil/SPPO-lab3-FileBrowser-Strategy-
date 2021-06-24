@@ -65,6 +65,6 @@ QVariant FilesModel::data(const QModelIndex &index, int role) const
 void FilesModel::updateModel(QList<Entry> model)
 {
     beginResetModel();
-    m_model = model;
+    m_model = model; 
     endResetModel();
 }

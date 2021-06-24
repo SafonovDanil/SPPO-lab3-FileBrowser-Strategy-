@@ -10,7 +10,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    barchart.cpp \
+    barchartadapter.cpp \
     byfiletype_calculationstrategy.cpp \
     byfolder_calculationstrategy.cpp \
     calculationstrategy.cpp \
@@ -18,19 +18,17 @@ SOURCES += \
     filesmodel.cpp \
     main.cpp \
     mainwindow.cpp \
-    myview.cpp \
-    piechart.cpp
+    piechartadapter.cpp
 
 HEADERS += \
-    barchart.h \
+    barchartadapter.h \
     byfiletype_calculationstrategy.h \
     byfolder_calculationstrategy.h \
     calculationstrategy.h \
     entry.h \
     filesmodel.h \
     mainwindow.h \
-    myview.h \
-    piechart.h
+    piechartadapter.h
 
 FORMS += \
     mainwindow.ui
