@@ -33,7 +33,7 @@ QList<Entry> ByFileType_CalculationStrategy::CalculationMethod(const QString& pa
             if(curItem.suffix() == curSuffix)
                 typesSizeList.last().entry_size += curItem.size();
         }
-        typesSizeList.last().entry_percent = typesSizeList.last().entry_size  / dirSize;
+        typesSizeList.last().entry_percent = (int)(typesSizeList.last().entry_size * 100)  / (100.* dirSize);
     }
     return typesSizeList;
 }

@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->horizontalLayout_3->addWidget(tableView,2);
     barAdapter = new BarChartAdapter(this,strategy->CalculationMethod(currentDir));
     pieAdapter = new PieChartAdapter(this,strategy->CalculationMethod(currentDir));
-    barView = new QChartView(/*barAdapter->getChart()*/);
-    pieView = new QChartView(/*pieAdapter->getChart()*/);
+    barView = new QChartView(barAdapter->getChart());
+    pieView = new QChartView(pieAdapter->getChart());
 
 
     ui->horizontalLayout_3->addWidget(barView,2);

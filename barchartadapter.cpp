@@ -29,7 +29,6 @@ BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data): File
 
 void BarChartAdapter::updateModel(QList<Entry> model)
 {
-
     const auto series = new QBarSeries;
     for (const auto& it : model)
     {
@@ -38,7 +37,6 @@ void BarChartAdapter::updateModel(QList<Entry> model)
         set->append(it.entry_percent* 100);
         series->append(set);
     }
-
     chart->removeAllSeries();
     chart->addSeries(series);
 

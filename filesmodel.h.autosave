@@ -7,7 +7,7 @@
 #include "imodel.h"
 #include "entry.h"
 
-class FilesModel : public QAbstractTableModel, iModel
+class FilesModel : public QAbstractTableModel, public iModel
 {
 public:
     FilesModel(QObject *parent, QList<Entry> model = QList<Entry>());

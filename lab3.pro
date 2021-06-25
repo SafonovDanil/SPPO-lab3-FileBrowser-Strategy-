@@ -16,6 +16,7 @@ SOURCES += \
     calculationstrategy.cpp \
     entry.cpp \
     filesmodel.cpp \
+    imodel.cpp \
     main.cpp \
     mainwindow.cpp \
     piechartadapter.cpp
@@ -27,6 +28,7 @@ HEADERS += \
     calculationstrategy.h \
     entry.h \
     filesmodel.h \
+    imodel.h \
     mainwindow.h \
     piechartadapter.h
 
