@@ -113,15 +113,18 @@ void MainWindow::displayTypeChanged(int display_id)
     case 0:
         view = tableView;
         modelPtr = filesModel;
+        modelPtr->updateModel(strategy->CalculationMethod(currentDir));
         break;
     case 1:
 
         view = pieView;
         modelPtr = pieAdapter;
+        modelPtr->updateModel(strategy->CalculationMethod(currentDir));
         break;
     case 2:
         view = barView;
         modelPtr = barAdapter;
+        modelPtr->updateModel(strategy->CalculationMethod(currentDir));
         break;
     }
     view->show();
