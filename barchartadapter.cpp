@@ -12,17 +12,17 @@ using namespace QtCharts;
 
 BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data): FilesModel(parent)
 {
-    const auto series = new QBarSeries;
-    for (const auto& it : data)
-    {
-        const auto label = it.entry_name + " - (" + QString::number(it.entry_percent* 100, 'g', 3) + ")%";
-        const auto set = new QBarSet(label);
-        set->append(it.entry_percent* 100);
-        series->append(set);
-    }
-    chart.addSeries(series);
-    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
-    chart.legend()->setAlignment(Qt::AlignRight);
+//    const auto series = new QBarSeries;
+//    for (const auto& it : data)
+//    {
+//        const auto label = it.entry_name + " - (" + QString::number(it.entry_percent* 100, 'g', 3) + ")%";
+//        const auto set = new QBarSet(label);
+//        set->append(it.entry_percent* 100);
+//        series->append(set);
+//    }
+//    chart.addSeries(series);
+//    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
+//    chart.legend()->setAlignment(Qt::AlignRight);
 
 }
 
