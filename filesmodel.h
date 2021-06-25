@@ -7,7 +7,7 @@
 #include "imodel.h"
 #include "entry.h"
 
-class FilesModel : public QAbstractTableModel, iModel
+class FilesModel : public QAbstractTableModel, public iModel
 {
 public:
     FilesModel(QObject *parent, QList<Entry> model = QList<Entry>());
@@ -18,6 +18,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
     virtual void updateModel(QList<Entry> model);
+    void convertData(QList<Entry> model);
 
 private:
 

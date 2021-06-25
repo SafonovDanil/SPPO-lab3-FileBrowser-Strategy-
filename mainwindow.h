@@ -95,7 +95,8 @@ private:
     QChartView *pieView;
 
 
-     FilesModel * modelPtr;
+
+    iModel* modelPtr;
 
 };
 

@@ -19,6 +19,7 @@ SOURCES += \
     imodel.cpp \
     main.cpp \
     mainwindow.cpp \
+    pattern.cpp \
     piechartadapter.cpp
 
 HEADERS += \
@@ -30,6 +31,7 @@ HEADERS += \
     filesmodel.h \
     imodel.h \
     mainwindow.h \
+    pattern.h \
     piechartadapter.h
 
 FORMS += \

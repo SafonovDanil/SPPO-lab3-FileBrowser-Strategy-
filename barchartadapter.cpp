@@ -10,24 +10,24 @@
 
 using namespace QtCharts;
 
-BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data): FilesModel(parent)
+BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data)
 {
     chart = new QChart;
-//    const auto series = new QBarSeries;
-//    for (const auto& it : data)
-//    {
-//        const auto label = it.entry_name + " - (" + QString::number(it.entry_percent* 100, 'g', 3) + ")%";
-//        const auto set = new QBarSet(label);
-//        set->append(it.entry_percent* 100);
-//        series->append(set);
-//    }
-//    chart.addSeries(series);
-//    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
-//    chart.legend()->setAlignment(Qt::AlignRight);
+    //    const auto series = new QBarSeries;
+    //    for (const auto& it : data)
+    //    {
+    //        const auto label = it.entry_name + " - (" + QString::number(it.entry_percent* 100, 'g', 3) + ")%";
+    //        const auto set = new QBarSet(label);
+    //        set->append(it.entry_percent* 100);
+    //        series->append(set);
+    //    }
+    //    chart.addSeries(series);
+    //    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
+    //    chart.legend()->setAlignment(Qt::AlignRight);
 
 }
 
-void BarChartAdapter::updateModel(QList<Entry> model)
+QAbstractSeries* BarChartAdapter::convertData(QList<Entry> model)
 {
     const auto series = new QBarSeries;
     for (const auto& it : model)
@@ -37,13 +37,10 @@ void BarChartAdapter::updateModel(QList<Entry> model)
         set->append(it.entry_percent* 100);
         series->append(set);
     }
-    chart->removeAllSeries();
-    chart->addSeries(series);
-
-    chart->setTheme(QChart::ChartTheme::ChartThemeLight);
-    chart->legend()->setAlignment(Qt::AlignRight);
-
+    return series;
 }
+
+
 
 QChart * BarChartAdapter::getChart()
 {

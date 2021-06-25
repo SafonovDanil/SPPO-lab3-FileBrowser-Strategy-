@@ -10,25 +10,14 @@
 
 using namespace QtCharts;
 
-PieChartAdapter::PieChartAdapter(QWidget *parent,const QList<Entry>& data): FilesModel(parent)
+PieChartAdapter::PieChartAdapter(QWidget *parent,const QList<Entry>& data)
 {
     chart = new QChart();
-//    const auto series = new QPieSeries;
-//    for (const auto& it : data)
-//    {
-//        const auto label = it.entry_name + " - " + QString::number(it.entry_percent* 100, 'g', 3) + "%";
-//        const auto value = it.entry_percent* 100;
-//        const auto slice = new QPieSlice(label, value);
-//        series->append(slice);
-//    }
-//    chart.addSeries(series);
-//    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
-//    chart.legend()->setAlignment(Qt::AlignRight);
 }
 
-void PieChartAdapter::updateModel(QList<Entry> model)
-{
 
+QAbstractSeries* PieChartAdapter::convertData(QList<Entry> model)
+{
     const auto series = new QPieSeries;
     for (const auto& it : model)
     {
@@ -39,13 +28,11 @@ void PieChartAdapter::updateModel(QList<Entry> model)
         series->append(slice);
         set->append(it.entry_percent* 100);
     }
-
-    chart->removeAllSeries();
-    chart->addSeries(series);
-    chart->setTheme(QChart::ChartTheme::ChartThemeLight);
-    chart->legend()->setAlignment(Qt::AlignRight);
-
+    return series;
 }
+
+
+
 
 QChart * PieChartAdapter::getChart()
 {

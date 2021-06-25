@@ -4,24 +4,24 @@
 #include <QAbstractItemView>
 #include "entry.h"
 #include <QChart>
-#include "filesmodel.h"
+#include "pattern.h"
+
 using namespace QtCharts;
 namespace QtCharts
 {
     class QChart;
 }
 
-class PieChartAdapter:public FilesModel
+class PieChartAdapter:public Pattern
 {
 public:
     explicit PieChartAdapter(QWidget *parent, const QList<Entry>& data);
     ~PieChartAdapter() = default;
-    void updateModel(QList<Entry> model);
     QChart * getChart();
+    QAbstractSeries* convertData(QList<Entry> model);
 
 protected:
 
 private:
-    QChart* chart;
 };
 #endif // PIECHARTADAPTER_H

@@ -62,9 +62,16 @@ QVariant FilesModel::data(const QModelIndex &index, int role) const
     }
 }
 
+//void FilesModel::convertData(QList<Entry> model)
+//{
+//    beginResetModel();
+//    m_model = model;
+//    endResetModel();
+//}
+
 void FilesModel::updateModel(QList<Entry> model)
 {
     beginResetModel();
-    m_model = model; 
+    m_model = model;
     endResetModel();
 }
