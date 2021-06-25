@@ -22,6 +22,6 @@ public:
 protected:
 
 private:
-    QChart chart;
+    QChart* chart;
 };
 #endif // PIECHARTADAPTER_H

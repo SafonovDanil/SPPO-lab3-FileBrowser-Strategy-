@@ -12,6 +12,7 @@ using namespace QtCharts;
 
 BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data): FilesModel(parent)
 {
+    chart = new QChart;
 //    const auto series = new QBarSeries;
 //    for (const auto& it : data)
 //    {
@@ -28,6 +29,7 @@ BarChartAdapter::BarChartAdapter(QWidget *parent,const QList<Entry>& data): File
 
 void BarChartAdapter::updateModel(QList<Entry> model)
 {
+
     const auto series = new QBarSeries;
     for (const auto& it : model)
     {
@@ -37,15 +39,15 @@ void BarChartAdapter::updateModel(QList<Entry> model)
         series->append(set);
     }
 
-    chart.removeAllSeries();
-    chart.addSeries(series);
+    chart->removeAllSeries();
+    chart->addSeries(series);
 
-    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
-    chart.legend()->setAlignment(Qt::AlignRight);
+    chart->setTheme(QChart::ChartTheme::ChartThemeLight);
+    chart->legend()->setAlignment(Qt::AlignRight);
 
 }
 
 QChart * BarChartAdapter::getChart()
 {
-    return &chart;
+    return chart;
 }

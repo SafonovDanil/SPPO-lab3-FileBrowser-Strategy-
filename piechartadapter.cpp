@@ -12,6 +12,7 @@ using namespace QtCharts;
 
 PieChartAdapter::PieChartAdapter(QWidget *parent,const QList<Entry>& data): FilesModel(parent)
 {
+    chart = new QChart();
 //    const auto series = new QPieSeries;
 //    for (const auto& it : data)
 //    {
@@ -27,6 +28,7 @@ PieChartAdapter::PieChartAdapter(QWidget *parent,const QList<Entry>& data): File
 
 void PieChartAdapter::updateModel(QList<Entry> model)
 {
+
     const auto series = new QPieSeries;
     for (const auto& it : model)
     {
@@ -38,16 +40,16 @@ void PieChartAdapter::updateModel(QList<Entry> model)
         set->append(it.entry_percent* 100);
     }
 
-    chart.removeAllSeries();
-    chart.addSeries(series);
-    chart.setTheme(QChart::ChartTheme::ChartThemeLight);
-    chart.legend()->setAlignment(Qt::AlignRight);
+    chart->removeAllSeries();
+    chart->addSeries(series);
+    chart->setTheme(QChart::ChartTheme::ChartThemeLight);
+    chart->legend()->setAlignment(Qt::AlignRight);
 
 }
 
 QChart * PieChartAdapter::getChart()
 {
-    return &chart;
+    return chart;
 }
 
 

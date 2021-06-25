@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->horizontalLayout_3->addWidget(tableView,2);
     barAdapter = new BarChartAdapter(this,strategy->CalculationMethod(currentDir));
     pieAdapter = new PieChartAdapter(this,strategy->CalculationMethod(currentDir));
-    barView = new QChartView(barAdapter->getChart());
-    pieView = new QChartView(pieAdapter->getChart());
+    barView = new QChartView(/*barAdapter->getChart()*/);
+    pieView = new QChartView(/*pieAdapter->getChart()*/);
 
 
     ui->horizontalLayout_3->addWidget(barView,2);
@@ -74,9 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this, SLOT(on_selectionChangedSlot(const QItemSelection &, const QItemSelection &)));
+
 }
-
-
 
 
 MainWindow::~MainWindow()

@@ -20,7 +20,7 @@ public:
     QChart * getChart();
 
 private:
-    QChart chart;
+    QChart* chart;
 };
 
 #endif // CHARTADAPTER_H
