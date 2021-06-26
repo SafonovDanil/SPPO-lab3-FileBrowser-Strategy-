@@ -18,7 +18,9 @@ public:
     explicit PieChartAdapter(QWidget *parent, const QList<Entry>& data);
     ~PieChartAdapter() = default;
     QChart * getChart();
-    QAbstractSeries* convertData(QList<Entry> model);
+    virtual QAbstractSeries* convertData(QList<Entry> model);
+    virtual void setTheme();
+    virtual void setLegend();
 
 protected:
 

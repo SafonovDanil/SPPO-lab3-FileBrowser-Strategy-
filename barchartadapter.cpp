@@ -40,7 +40,16 @@ QAbstractSeries* BarChartAdapter::convertData(QList<Entry> model)
     return series;
 }
 
+void BarChartAdapter::setTheme()
+{
+    chart->setTheme(QChart::ChartTheme::ChartThemeLight);
+//    chart->legend()->setAlignment(Qt::AlignRight);
+}
 
+void BarChartAdapter::setLegend()
+{
+    chart->legend()->setAlignment(Qt::AlignRight);
+}
 
 QChart * BarChartAdapter::getChart()
 {

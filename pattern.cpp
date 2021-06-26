@@ -15,6 +15,6 @@ void Pattern::updateModel(QList<Entry> model)
  {
      chart->removeAllSeries();
      chart->addSeries(series);
-     chart->setTheme(QChart::ChartTheme::ChartThemeLight);
-     chart->legend()->setAlignment(Qt::AlignRight);
+     this->setTheme();
+     this->setLegend();
  }

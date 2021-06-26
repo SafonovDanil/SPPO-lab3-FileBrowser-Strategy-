@@ -21,6 +21,8 @@ public:
     virtual void updateModel(QList<Entry> model);
     virtual QAbstractSeries* convertData(QList<Entry> model) = 0;
     virtual void updateChart(QAbstractSeries* series);
+    virtual  void setTheme() = 0;
+    virtual void setLegend() = 0;
 };
 
 #endif // PATTERN_H

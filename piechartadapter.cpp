@@ -32,6 +32,16 @@ QAbstractSeries* PieChartAdapter::convertData(QList<Entry> model)
 }
 
 
+void PieChartAdapter::setTheme()
+{
+    chart->setTheme(QChart::ChartTheme::ChartThemeQt);
+//    chart->legend()->setAlignment(Qt::AlignLeft);
+}
+
+void PieChartAdapter::setLegend()
+{
+    chart->legend()->setAlignment(Qt::AlignLeft);
+}
 
 
 QChart * PieChartAdapter::getChart()

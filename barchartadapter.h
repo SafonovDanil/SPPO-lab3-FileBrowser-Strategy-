@@ -18,7 +18,9 @@ public:
     explicit BarChartAdapter(QWidget *parent, const QList<Entry>& data);
     ~BarChartAdapter() = default;
     QChart * getChart();
-    QAbstractSeries* convertData(QList<Entry> model);
+    virtual QAbstractSeries* convertData(QList<Entry> model);
+    virtual void setTheme();
+    virtual void setLegend();
 };
 
 #endif // CHARTADAPTER_H
